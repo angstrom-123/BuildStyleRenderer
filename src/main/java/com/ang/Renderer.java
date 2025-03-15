@@ -37,14 +37,12 @@ public class Renderer {
 		imgPanel.requestFocusInWindow();
 	}
 
-	public void writePixel(Vec3 colour, int x, int y) {
-		if (colour.lengthSquared() - 1 > 1E-8) {
-			colour = colour.unitVector();
-		}
+	public void writePixel(Colour colour, int x, int y) {
+		colour = colour.unitNormalize();
 		// convert from linear to gamma space
-		double r = colour.x() > 0 ? Math.sqrt(colour.x()) : 0.0;
-		double g = colour.y() > 0 ? Math.sqrt(colour.y()) : 0.0;
-		double b = colour.z() > 0 ? Math.sqrt(colour.z()) : 0.0;
+		double r = colour.r() > 0 ? Math.sqrt(colour.r()) : 0.0;
+		double g = colour.g() > 0 ? Math.sqrt(colour.g()) : 0.0;
+		double b = colour.b() > 0 ? Math.sqrt(colour.b()) : 0.0;
 		// normalize and round
 		int rComponent = (int) Math.min(r * 255, 255);
 		int gComponent = (int) Math.min(g * 255, 255);
@@ -54,7 +52,39 @@ public class Renderer {
 		img.setRGB(x, y, col);
 	}
 
+	public void writeColumn(Colour columnColour, Colour backgroundColour, 
+			int x, int columnHeight) {
+		int colColour = processToInt(columnColour);
+		int bgColour = processToInt(backgroundColour);
+		columnHeight = Math.min(columnHeight, height);
+		int startPos = (int) Math.floor((height - columnHeight) / 2);
+		for (int y = 0; y < height; y++) {
+			if (y < startPos) {
+				img.setRGB(x, y, bgColour);	
+			} else if (y < startPos + columnHeight) {
+				img.setRGB(x, y, colColour);
+			} else {
+				img.setRGB(x, y, bgColour); 
+			}
+		}
+	}
+
 	public void repaint() {
 		frame.repaint();
+	}
+
+	private int processToInt(Colour c) {
+		c = c.unitNormalize();
+		// convert from linear to gamma space
+		double r = c.r() > 0 ? Math.sqrt(c.r()) : 0.0;
+		double g = c.g() > 0 ? Math.sqrt(c.g()) : 0.0;
+		double b = c.b() > 0 ? Math.sqrt(c.b()) : 0.0;
+		// normalize and round
+		int rComponent = (int) Math.min(r * 255, 255);
+		int gComponent = (int) Math.min(g * 255, 255);
+		int bComponent = (int) Math.min(b * 255, 255);
+		// convert to BufferedImage.TYPE_INT_RGB
+		return (rComponent << 16) | (gComponent << 8) | (bComponent);
+
 	}
 }

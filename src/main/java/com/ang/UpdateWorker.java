@@ -1,8 +1,8 @@
 package com.ang;
 
 public class UpdateWorker implements Runnable {
-	private boolean stop = false;
 	private int frameMs;
+	private boolean stop = false;
 	private ThreadInterface ti;
 
 	public UpdateWorker(int frameMs) {
