@@ -1,5 +1,7 @@
 package com.ang;
 
+import com.ang.Maths.Vec2;
+
 public class HitRecord {
 	private Vec2 hitPoint;
 	private double t;

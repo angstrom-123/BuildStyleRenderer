@@ -1,4 +1,4 @@
-package com.ang;
+package com.ang.Maths;
 
 public class Ray {
 	private Vec2 origin;

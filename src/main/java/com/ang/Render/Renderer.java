@@ -1,10 +1,12 @@
-package com.ang;
+package com.ang.Render;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import javax.swing.JFrame;
+
+import com.ang.Global;
 
 public class Renderer {
 	private JFrame frame = new JFrame();

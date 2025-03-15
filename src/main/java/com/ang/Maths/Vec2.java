@@ -1,4 +1,4 @@
-package com.ang;
+package com.ang.Maths;
 
 public class Vec2 {
 	private double x = 0.0;

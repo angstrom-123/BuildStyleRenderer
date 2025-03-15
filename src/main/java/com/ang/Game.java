@@ -1,5 +1,9 @@
 package com.ang;
 
+import com.ang.Hittable.World;
+import com.ang.Maths.Vec2;
+import com.ang.Thread.*;
+
 public class Game implements ThreadInterface {
 	private final int SCREEN_WIDTH = 300;
 	private final double ASPECT_RATIO = 16.0 / 9.0;

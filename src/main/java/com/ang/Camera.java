@@ -1,5 +1,9 @@
 package com.ang;
 
+import com.ang.Render.*;
+import com.ang.Maths.*;
+import com.ang.Hittable.*;
+
 public class Camera {
 	// +x = left
 	// +y = forward

@@ -1,4 +1,4 @@
-package com.ang;
+package com.ang.Render;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;

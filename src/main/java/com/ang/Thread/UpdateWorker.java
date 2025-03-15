@@ -1,4 +1,4 @@
-package com.ang;
+package com.ang.Thread;
 
 public class UpdateWorker implements Runnable {
 	private int frameMs;

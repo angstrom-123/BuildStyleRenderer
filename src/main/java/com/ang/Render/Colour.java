@@ -1,4 +1,4 @@
-package com.ang;
+package com.ang.Render;
 
 public class Colour {
 	double r;

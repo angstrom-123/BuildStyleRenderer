@@ -1,4 +1,7 @@
-package com.ang;
+package com.ang.Hittable;
+
+import com.ang.Maths.*;
+import com.ang.HitRecord;
 
 public class World {
 	private final double cubeSize = 1.5;

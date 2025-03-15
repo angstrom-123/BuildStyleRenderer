@@ -1,4 +1,6 @@
-package com.ang;
+package com.ang.Maths;
+
+import com.ang.Global;
 
 public class Interval {
 	double min;
