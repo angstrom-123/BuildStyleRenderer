@@ -4,7 +4,7 @@ public class Camera {
 	// +x = left
 	// +y = forward
 	// +z = up
-	private Colour backgroundCol = new Colour(0.3, 0.4, 0.6).unitNormalize();
+	private Colour backgroundCol = new Colour(0.3, 0.4, 0.6);
 	private Renderer renderer;
 	private World world;
 	private int imageWidth;
@@ -48,18 +48,25 @@ public class Camera {
 
 	public long draw() {
 		long startTime = System.currentTimeMillis();
-		Colour cubeCol = new Colour(0.4, 0.4, 0.4).unitNormalize();
+		Colour cubeCol = new Colour(0.4, 0.4, 0.4);
 		for (int i = 0; i < imageWidth; i++) {
 			Ray r = getRay(i);	
 			HitRecord rec = new HitRecord();
 			if (world.hit(r, new Interval(0.001, Global.INFINITY), rec)) {
-				renderer.writeColumn(cubeCol, backgroundCol, i, getColumnHeight(rec));
+				renderer.writeColumn(getColumnColour(rec), backgroundCol, i, getColumnHeight(rec));
 			} else {
 				renderer.writeColumn(backgroundCol, backgroundCol, i, imageHeight); 
 			}
 		}
 		renderer.repaint();
 		return System.currentTimeMillis() - startTime;
+
+	}
+
+	private Colour getColumnColour(HitRecord rec) {
+		double distance = (rec.hitPoint().sub(position)).length();
+		double value = 1.0 - (distance / 2.0);
+		return new Colour(value, value, value);
 
 	}
 

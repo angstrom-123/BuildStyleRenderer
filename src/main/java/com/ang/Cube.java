@@ -65,8 +65,10 @@ public class Cube {
 		double pHighDist = pHigh.sub(r.origin()).lengthSquared();
 		if (pLowDist < pHighDist) {
 			rec.setHitPoint(pLow);
+			rec.setT(tInterval.min());
 		} else {
 			rec.setHitPoint(pHigh);
+			rec.setT(tInterval.max());
 		}
 		return true;
 

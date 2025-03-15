@@ -2,25 +2,25 @@ package com.ang;
 
 public class World {
 	private final double cubeSize = 1.5;
-// private int[][] map = new int[][]{
-//		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-//		{1, 0, 1, 1, 1, 1, 1, 0, 0, 1},
-//		{1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-//		{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-//		{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-//		{1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-//		{1, 0, 1, 0, 0, 0, 1, 0, 0, 1},
-//		{1, 0, 1, 0, 0, 0, 1, 0, 0, 1},
-//		{1, 0, 1, 0, 0, 0, 1, 1, 0, 1},
-//		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-//	};
-	private int[][] map = new int[][] {
-		{1, 1, 1, 1, 1},
-		{1, 0, 0, 0, 1},
-		{1, 0, 0, 0, 1},
-		{1, 0, 0, 0, 1},
-		{1, 1, 1, 1, 1}
+	private int[][] map = new int[][]{
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{1, 0, 1, 1, 1, 1, 1, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+		{1, 0, 1, 0, 0, 0, 1, 0, 0, 1},
+		{1, 0, 1, 0, 0, 0, 1, 0, 0, 1},
+		{1, 0, 1, 0, 0, 0, 1, 1, 0, 1},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	};
+//	private int[][] map = new int[][] {
+//		{1, 1, 1, 1, 1},
+//		{1, 0, 0, 0, 1},
+//		{1, 0, 0, 0, 1},
+//		{1, 0, 0, 0, 1},
+//		{1, 1, 1, 1, 1}
+//	};
 	private Cube[] worldArray;
 
 	public World() {
@@ -28,13 +28,18 @@ public class World {
 	}
 
 	public boolean hit(Ray r, Interval tInterval, HitRecord rec) {
+		boolean didHit = false;
+		HitRecord tempRec = new HitRecord();
+		double closestHit = tInterval.max();
 		for (Cube c : worldArray) {
-			if (c.hit(r, tInterval, rec)) {
-				return true;
-
+			Interval newBounds = new Interval(tInterval.min(), closestHit);
+			if (c.hit(r, newBounds, tempRec)) {
+				didHit = true;	
+				closestHit = tempRec.t();
+				rec.set(tempRec);
 			}
 		}
-		return false;
+		return didHit;
 
 	}
 

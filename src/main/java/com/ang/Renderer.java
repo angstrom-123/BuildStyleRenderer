@@ -38,17 +38,7 @@ public class Renderer {
 	}
 
 	public void writePixel(Colour colour, int x, int y) {
-		colour = colour.unitNormalize();
-		// convert from linear to gamma space
-		double r = colour.r() > 0 ? Math.sqrt(colour.r()) : 0.0;
-		double g = colour.g() > 0 ? Math.sqrt(colour.g()) : 0.0;
-		double b = colour.b() > 0 ? Math.sqrt(colour.b()) : 0.0;
-		// normalize and round
-		int rComponent = (int) Math.min(r * 255, 255);
-		int gComponent = (int) Math.min(g * 255, 255);
-		int bComponent = (int) Math.min(b * 255, 255);
-		// convert to BufferedImage.TYPE_INT_RGB
-		int col = (rComponent << 16) | (gComponent << 8) | (bComponent);
+		int col = processToInt(colour);
 		img.setRGB(x, y, col);
 	}
 
@@ -74,7 +64,6 @@ public class Renderer {
 	}
 
 	private int processToInt(Colour c) {
-		c = c.unitNormalize();
 		// convert from linear to gamma space
 		double r = c.r() > 0 ? Math.sqrt(c.r()) : 0.0;
 		double g = c.g() > 0 ? Math.sqrt(c.g()) : 0.0;

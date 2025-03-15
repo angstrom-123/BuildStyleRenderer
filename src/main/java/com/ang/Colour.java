@@ -27,10 +27,4 @@ public class Colour {
 		return b;
 
 	}
-
-	public Colour unitNormalize() {
-		double scale = Math.sqrt(r * r + b * b + g * g);
-		return new Colour(r / scale, g / scale, b / scale);
-
-	}	
 }
