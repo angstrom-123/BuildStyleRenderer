@@ -37,9 +37,11 @@ public class World {
 		for (Cube c : worldArray) {
 			Interval newBounds = new Interval(tInterval.min(), closestHit);
 			if (c.hit(r, newBounds, tempRec)) {
-				didHit = true;	
-				closestHit = tempRec.t();
-				rec.set(tempRec);
+				if (tempRec.t() > 0.0) {
+					didHit = true;	
+					closestHit = tempRec.t();
+					rec.setT(tempRec.t());
+				}
 			}
 		}
 		return didHit;

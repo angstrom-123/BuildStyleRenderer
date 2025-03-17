@@ -1,5 +1,7 @@
 package com.ang.Maths;
 
+import com.ang.Global;
+
 public class Vec3 {
 	private double x = 0.0;
 	private double y = 0.0;
@@ -95,6 +97,28 @@ public class Vec3 {
 
 	}
 
+	public double minAxis() {
+		double min = Global.INFINITY;
+		for (int i = 0; i < 3; i++) {
+			if (axis(i) > min) {
+				min = axis(i);
+			}
+		}
+		return min;
+
+	}
+
+	public double maxAxis() {
+		double max = -Global.INFINITY;
+		for (int i = 0; i < 3; i++) {
+			if (axis(i) > max) {
+				max = axis(i);
+			}
+		}
+		return max;
+
+	}
+
 	public double lengthSquared() {
 		return (x * x) + (y * y) + (z * z);
 
@@ -131,6 +155,24 @@ public class Vec3 {
 			return 0.0;
 
 		}
+	}
+
+	public static Vec3 min(Vec3 u, Vec3 v) {
+		Vec3 out = new Vec3();
+		for (int i = 0; i < 3; i++) {
+			out.setAxis(i, Math.min(u.axis(i), v.axis(i)));
+		}
+		return out;
+
+	}
+
+	public static Vec3 max(Vec3 u, Vec3 v) {
+		Vec3 out = new Vec3();
+		for (int i = 0; i < 3; i++) {
+			out.setAxis(i, Math.max(u.axis(i), v.axis(i)));
+		}
+		return out;
+
 	}
 
 	public static double dot(Vec3 u, Vec3 v) {

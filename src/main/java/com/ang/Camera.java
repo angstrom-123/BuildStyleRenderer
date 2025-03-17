@@ -14,6 +14,7 @@ public class Camera {
 	private int imageWidth;
 	private int imageHeight;
 	private double viewportHeight = 2.0;
+	private double viewportWidth;
 	private double aspectRatio;
 	private Vec2 position;
 	private Vec2 facing;
@@ -32,12 +33,29 @@ public class Camera {
 		this.facing = facing;
 	}
 
-	public void init() {
+	public void changePosition(Vec2 positionDelta) {
+		position = position.add(positionDelta);	
+	}
+
+	public void init(InputListener il) {
 		imageHeight = (int) Math.round((double) imageWidth / aspectRatio);
 		imageWidth = Math.max(imageWidth, 1);
-		renderer = new Renderer(imageWidth, imageHeight);
-		double viewportWidth = viewportHeight 
+		renderer = new Renderer(imageWidth, imageHeight, il);
+		viewportWidth = viewportHeight 
 				* ((double) imageWidth / (double) imageHeight);
+		// camera basis vectors
+		v = new Vec3(0.0, 0.0, 1.0); // up 
+		u = Vec3.cross(v, facing.toVec3()).unitVector(); // side
+		w = facing.toVec3().unitVector(); // back
+		// viewport basis vectors
+		Vec2 viewportU = u.mul(viewportWidth).toVec2();
+		pixelDeltaU = (u.mul(viewportWidth).div(imageWidth)).toVec2();
+		// pixel0Position = position.sub(pixelDeltaU.mul(0.5));
+		Vec2 viewportOffset = w.add(viewportU.div(2.0)).toVec2();
+		pixel0Position = position.sub((viewportOffset.add(pixelDeltaU)).div(2.0));
+	}
+
+	public void update() {
 		// camera basis vectors
 		v = new Vec3(0.0, 0.0, 1.0); // up 
 		u = Vec3.cross(v, facing.toVec3()).unitVector(); // side
@@ -52,12 +70,13 @@ public class Camera {
 
 	public long draw() {
 		long startTime = System.currentTimeMillis();
-		Colour cubeCol = new Colour(0.4, 0.4, 0.4);
 		for (int i = 0; i < imageWidth; i++) {
 			Ray r = getRay(i);	
 			HitRecord rec = new HitRecord();
 			if (world.hit(r, new Interval(0.001, Global.INFINITY), rec)) {
-				renderer.writeColumn(getColumnColour(rec), backgroundCol, i, getColumnHeight(rec));
+				Colour columnCol = getColumnColour(r, rec);
+				int columnHeight = getColumnHeight(r, rec);
+				renderer.writeColumn(columnCol, backgroundCol, i, columnHeight);
 			} else {
 				renderer.writeColumn(backgroundCol, backgroundCol, i, imageHeight); 
 			}
@@ -67,17 +86,16 @@ public class Camera {
 
 	}
 
-	private Colour getColumnColour(HitRecord rec) {
-		double distance = (rec.hitPoint().sub(position)).length();
-		double value = 1.0 - (distance / 2.0);
+	private Colour getColumnColour(Ray r, HitRecord rec) {
+		double distance = (r.at(rec.t()).sub(r.origin())).length();
+		double value = 1.0 - (distance / 10.0);
 		return new Colour(value, value, value);
 
 	}
 
-	private int getColumnHeight(HitRecord rec) {
-		double colScale = 0.8;
-		double distance = (rec.hitPoint().sub(position)).length();
-		return (int) Math.round((imageHeight - (30.0 * distance)) * colScale);
+	private int getColumnHeight(Ray r, HitRecord rec) {
+		double distance = (r.at(rec.t()).sub(r.origin())).length();
+		return (int) Math.round(imageHeight - (distance * 30));
 
 	}
 

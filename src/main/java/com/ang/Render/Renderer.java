@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 
+import com.ang.InputListener;
 import com.ang.Global;
 
 public class Renderer {
@@ -15,28 +16,29 @@ public class Renderer {
 	private BufferedImage img;
 	private ImagePanel imgPanel;
 
-	public Renderer(int width, int height) {
+	public Renderer(int width, int height, InputListener il) {
 		this.width = width;
 		this.height = height;
 		this.img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		this.imgPanel = new ImagePanel(img);
-		init();
+		init(il);
 	}
 	
-	private void init() {
+	private void init(InputListener il) {
 		imgPanel.setPreferredSize(new Dimension(width, height));
 		frame.getContentPane().add(imgPanel);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		imgPanel.setFocusable(true);
+		imgPanel.requestFocusInWindow();
+		imgPanel.addKeyListener(il);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				Global.uw.doStop();
 				frame.dispose();
 			}
 		});
-		imgPanel.setFocusable(true);
-		imgPanel.requestFocusInWindow();
 	}
 
 	public void writePixel(Colour colour, int x, int y) {
