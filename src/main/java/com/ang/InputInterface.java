@@ -1,6 +1,6 @@
 package com.ang;
 
 public interface InputInterface {
-	void pressed(char key);
-	void released(char key);
+	void pressed(int key);
+	void released(int key);
 }

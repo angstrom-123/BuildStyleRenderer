@@ -14,16 +14,22 @@ public class InputListener implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_W) {
-			ii.pressed('w');
+			ii.pressed(key);
 		}
 		if (key == KeyEvent.VK_A) {
-			ii.pressed('a');
+			ii.pressed(key);
 		}
 		if (key == KeyEvent.VK_S) {
-			ii.pressed('s');
+			ii.pressed(key);
 		}
 		if (key == KeyEvent.VK_D) {
-			ii.pressed('d');
+			ii.pressed(key);
+		}
+		if (key == KeyEvent.VK_LEFT) {
+			ii.pressed(key);
+		}
+		if (key == KeyEvent.VK_RIGHT) {
+			ii.pressed(key);
 		}
 	}
 
@@ -31,16 +37,22 @@ public class InputListener implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_W) {
-			ii.released('w');
+			ii.released(key);
 		}
 		if (key == KeyEvent.VK_A) {
-			ii.released('a');
+			ii.released(key);
 		}
 		if (key == KeyEvent.VK_S) {
-			ii.released('s');
+			ii.released(key);
 		}
 		if (key == KeyEvent.VK_D) {
-			ii.released('d');
+			ii.released(key);
+		}
+		if (key == KeyEvent.VK_LEFT) {
+			ii.released(key);
+		}
+		if (key == KeyEvent.VK_RIGHT) {
+			ii.released(key);
 		}
 	}
 

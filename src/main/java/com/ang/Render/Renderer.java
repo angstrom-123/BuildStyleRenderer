@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 import com.ang.InputListener;
+import com.ang.MouseInputListener;
 import com.ang.Global;
 
 public class Renderer {
@@ -16,15 +17,15 @@ public class Renderer {
 	private BufferedImage img;
 	private ImagePanel imgPanel;
 
-	public Renderer(int width, int height, InputListener il) {
+	public Renderer(int width, int height, InputListener il, MouseInputListener mil) {
 		this.width = width;
 		this.height = height;
 		this.img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		this.imgPanel = new ImagePanel(img);
-		init(il);
+		init(il, mil);
 	}
 	
-	private void init(InputListener il) {
+	private void init(InputListener il, MouseInputListener mil) {
 		imgPanel.setPreferredSize(new Dimension(width, height));
 		frame.getContentPane().add(imgPanel);
 		frame.pack();
@@ -33,6 +34,7 @@ public class Renderer {
 		imgPanel.setFocusable(true);
 		imgPanel.requestFocusInWindow();
 		imgPanel.addKeyListener(il);
+		imgPanel.addMouseMotionListener(mil);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				Global.uw.doStop();
