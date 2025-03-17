@@ -72,28 +72,6 @@ public class Cube {
 			rec.setT(tInterval.max());
 		}
 		return true;
-	
-	//	Vec3 lows = new Vec3(x.min(), y.min(), z.min());
-	//	Vec3 highs = new Vec3(x.max(), y.max(), z.max());
-	//	Vec3 tLows = new Vec3();
-	//	Vec3 tHighs = new Vec3();
-	//	for (int i = 0; i < 3; i++) {
-	//		double axisOrigin = r.origin().axis(i);
-	//		double axisDirection = r.direction().axis(i);
-	//		tLows.setAxis(i, (lows.axis(i) - axisOrigin) / axisDirection);
-	//		tHighs.setAxis(i,(highs.axis(i) - axisOrigin) / axisDirection);
-	//	}
-	//	Vec3 tCloses = Vec3.min(tLows, tHighs);
-	//	Vec3 tFars = Vec3.max(tLows, tHighs);
-	//	double tClose = tCloses.maxAxis();
-	//	double tFar = tFars.minAxis();
-	//	if (tClose > tFar) {
-	//		return false;
-
-	//	}
-	//	rec.setT(Math.min(tClose, tFar));
-	//	tInterval.setMax(Math.min(tClose, tFar));
-	//	return true;
 
 	}
 }

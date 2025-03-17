@@ -95,7 +95,10 @@ public class Camera {
 
 	private int getColumnHeight(Ray r, HitRecord rec) {
 		double distance = (r.at(rec.t()).sub(r.origin())).length();
-		return (int) Math.round(imageHeight - (distance * 30));
+		//return (int) Math.round(imageHeight - (distance * 30));
+		return (int) Math.round(
+				(-imageHeight / 20) * distance + imageHeight
+		);
 
 	}
 
