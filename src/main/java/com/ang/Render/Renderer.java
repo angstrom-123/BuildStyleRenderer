@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 
+import com.ang.Maths.Vec2;
 import com.ang.InputListener;
-import com.ang.MouseInputListener;
 import com.ang.Global;
 
 public class Renderer {
@@ -17,15 +17,15 @@ public class Renderer {
 	private BufferedImage img;
 	private ImagePanel imgPanel;
 
-	public Renderer(int width, int height, InputListener il, MouseInputListener mil) {
+	public Renderer(int width, int height, InputListener il) {
 		this.width = width;
 		this.height = height;
 		this.img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		this.imgPanel = new ImagePanel(img);
-		init(il, mil);
+		init(il);
 	}
 	
-	private void init(InputListener il, MouseInputListener mil) {
+	private void init(InputListener il) {
 		imgPanel.setPreferredSize(new Dimension(width, height));
 		frame.getContentPane().add(imgPanel);
 		frame.pack();
@@ -34,7 +34,6 @@ public class Renderer {
 		imgPanel.setFocusable(true);
 		imgPanel.requestFocusInWindow();
 		imgPanel.addKeyListener(il);
-		imgPanel.addMouseMotionListener(mil);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				Global.uw.doStop();
@@ -46,6 +45,21 @@ public class Renderer {
 	public void writePixel(Colour colour, int x, int y) {
 		int col = processToInt(colour);
 		img.setRGB(x, y, col);
+	}
+
+	public void writeColumn(Colour columnColour, Colour backgroundColour, 
+			int x, int bottom, int top) {
+		int colColour = processToInt(columnColour);
+		int bgColour = processToInt(backgroundColour);
+		for (int y = 0; y < height; y++) {
+			if (y < bottom) {
+				img.setRGB(x, y, bgColour);
+			} else if (y < top) {
+				img.setRGB(x, y, colColour);
+			} else {
+				img.setRGB(x, y, bgColour);
+			}
+		}
 	}
 
 	public void writeColumn(Colour columnColour, Colour backgroundColour, 
@@ -61,6 +75,30 @@ public class Renderer {
 				img.setRGB(x, y, colColour);
 			} else {
 				img.setRGB(x, y, bgColour); 
+			}
+		}
+	}
+
+	public void writeTile(Colour tileColour, int size, int x, int y) {
+		int tColour = processToInt(tileColour);
+		for (int j = y; j < y + size; j++) {
+			for (int i = x; i < x + size; i++) {
+				img.setRGB(i, j, tColour);
+			}
+		}
+	}
+
+	public void writeChevron(Colour colour, int width, int height, 
+			Vec2 facing, int x, int y) {
+		int chevColour = processToInt(colour);
+		int yTop = y - (height / 2);
+		int yBot = y + (height / 2);
+		for (int j = yTop; j < yBot; j++) {
+			int rowWidth = (int) Math.round(((double) width * (j - y)) / (double) height);
+			int xStart = x - (rowWidth / 2);
+			int xEnd = x + (rowWidth / 2);
+			for (int i = xStart; i < xEnd; i++) {
+				img.setRGB(i, j, chevColour);
 			}
 		}
 	}

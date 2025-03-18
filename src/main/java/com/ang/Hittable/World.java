@@ -30,6 +30,10 @@ public class World {
 		worldArray = toCubeArray(map);
 	}
 
+	public int[][] map() {
+		return map;
+	}
+
 	public boolean hit(Ray r, Interval tInterval, HitRecord rec) {
 		boolean didHit = false;
 		HitRecord tempRec = new HitRecord();

@@ -5,27 +5,25 @@ import com.ang.Maths.*;
 import com.ang.Hittable.*;
 
 public class Camera {
-	// +x = left
-	// +y = forward
-	// +z = up
-	private Colour backgroundCol = new Colour(0.3, 0.4, 0.6);
-	private Renderer renderer;
-	private World world;
-	private int imageWidth;
-	private int imageHeight;
-	private double viewportHeight = 2.0;
-	private double viewportWidth;
-	private double aspectRatio;
-	private Vec2 position;
-	private Vec2 facing;
-	private Vec3 w, u, v;
-	private Vec2 pixel0Position;
-	private Vec2 pixelDeltaU;
+	// TODO: fix minimap
+	private Colour 		backgroundCol 	= new Colour(0.3, 0.4, 0.6);
+	private int 		imageWidth 		= 100;
+	private double 		aspectRatio 	= 16.0 / 9.0;
+	private double 		fov 			= Math.PI / 2.5;
+	private Vec2 		position 		= new Vec2(0.0, 0.0);
+	private Vec2 		facing 			= new Vec2(0.0, 1.0);
+	private int 		imageHeight;
+	private double 		viewportHeight;
+	private double 		viewportWidth;
+	private Vec3 		w, u, v;
+	private Vec2 		pixel0Position;
+	private Vec2 		pixelDeltaU;
+	private Renderer 	renderer;
+	private Minimap		minimapRenderer;
 	
-	public Camera(int imageWidth, double aspectRatio, World world) {
+	public Camera(int imageWidth, double aspectRatio) {
 		this.imageWidth = imageWidth;
 		this.aspectRatio = aspectRatio;
-		this.world = world;
 	}
 
 	public void setTransform(Vec2 position, Vec2 facing) {
@@ -34,8 +32,8 @@ public class Camera {
 	}
 
 	public void changePosition(Vec2 positionDelta) {
-		Vec2 xDelta = facing.mul(positionDelta.y());
-		Vec2 yDelta = u.toVec2().neg().mul(positionDelta.x());
+		Vec2 xDelta = u.toVec2().neg().mul(positionDelta.x());
+		Vec2 yDelta = facing.mul(positionDelta.y());
 		position = position.add(xDelta).add(yDelta);
 	}
 
@@ -47,10 +45,12 @@ public class Camera {
 		facing = new Vec2(xPos, yPos).unitVector();
 	}
 
-	public void init(InputListener il, MouseInputListener mil) {
+	public void init(InputListener il) {
 		imageHeight = (int) Math.round((double) imageWidth / aspectRatio);
 		imageWidth = Math.max(imageWidth, 1);
-		renderer = new Renderer(imageWidth, imageHeight, il, mil);
+		renderer = new Renderer(imageWidth, imageHeight, il);
+		minimapRenderer = new Minimap(renderer);
+		viewportHeight = 2.0 * Math.tan(fov / 2.0);
 		viewportWidth = viewportHeight 
 				* ((double) imageWidth / (double) imageHeight);
 		update();
@@ -59,28 +59,34 @@ public class Camera {
 	public void update() {
 		// camera basis vectors
 		v = new Vec3(0.0, 0.0, 1.0); // up 
-		u = Vec3.cross(v, facing.toVec3()).unitVector(); // side
-		w = facing.toVec3().unitVector(); // back
+		w = facing.neg().toVec3().unitVector(); // back
+		u = Vec3.cross(v, w).unitVector(); // right
 		// viewport basis vectors
-		Vec2 viewportU = u.mul(viewportWidth).toVec2();
-		pixelDeltaU = (u.mul(viewportWidth).div(imageWidth)).toVec2();
+		Vec2 viewportU = (u.mul(viewportWidth)).toVec2();
+		pixelDeltaU = viewportU.div(imageWidth);
 		Vec2 offset = w.add(viewportU.div(2.0)).toVec2();
-		pixel0Position = position.sub((offset.add(pixelDeltaU)).div(2.0));
+		pixel0Position = position.sub(offset).add((pixelDeltaU).div(2.0));
 	}
 
-	public long draw() {
+	public long draw(World world) {
 		long startTime = System.currentTimeMillis();
+		// Drawing the world
 		for (int i = 0; i < imageWidth; i++) {
 			Ray r = getRay(i);	
 			HitRecord rec = new HitRecord();
 			if (world.hit(r, new Interval(0.001, Global.INFINITY), rec)) {
 				Colour columnCol = getColumnColour(r, rec);
-				int columnHeight = getColumnHeight(r, rec);
-				renderer.writeColumn(columnCol, backgroundCol, i, columnHeight);
+				int[] bounds = getColumnBounds(r, rec);
+				renderer.writeColumn(columnCol, backgroundCol, i, 
+						bounds[0], bounds[1]);
 			} else {
-				renderer.writeColumn(backgroundCol, backgroundCol, i, imageHeight); 
+				renderer.writeColumn(backgroundCol, backgroundCol, i, 
+						imageHeight); 
 			}
 		}
+		// Drawing the minimap
+		minimapRenderer.drawMinimap(world, position, facing);
+		// Refreshing the screen
 		renderer.repaint();
 		return System.currentTimeMillis() - startTime;
 
@@ -93,12 +99,12 @@ public class Camera {
 
 	}
 
-	// TODO: Columns should be larger than screen 
-	// viewport is a cut-out of the centre.
-	private int getColumnHeight(Ray r, HitRecord rec) {
+	private int[] getColumnBounds(Ray r, HitRecord rec) {
 		double distance = (r.at(rec.t()).sub(r.origin())).length();
-		return (int) Math.round(
-				(-imageHeight / 10) * distance + (imageHeight * 1.1));
+		int h = (int) (imageHeight / distance);
+		int bottom = Math.max((imageHeight / 2) - (h / 2), 0);
+		int top = Math.min((imageHeight / 2) + (h / 2), imageHeight - 1);
+		return new int[]{bottom, top};
 
 	}
 

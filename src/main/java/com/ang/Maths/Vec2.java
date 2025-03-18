@@ -70,7 +70,7 @@ public class Vec2 {
 	}
 
 	public Vec2 neg() {
-		return new Vec2(-this.x, -this.y);
+		return new Vec2(-x, -y);
 
 	}
 
