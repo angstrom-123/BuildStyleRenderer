@@ -2,19 +2,22 @@ package com.ang.Hittable;
 
 import com.ang.Maths.*;
 import com.ang.HitRecord;
+import com.ang.Render.Colour;
 
 public class Cube {
 	private Interval x;
 	private Interval y;
 	private Interval z;
+	private Colour albedo;
 
-	public Cube(Vec3 position, double size) {
+	public Cube(Vec3 position, double size, Colour albedo) {
 		this.x = new Interval(position.x() - (size / 2), 
 				position.x() + (size / 2));
 		this.y = new Interval(position.y() - (size / 2), 
 				position.y() + (size / 2));
 		this.z = new Interval(position.z() - (size / 2), 
 				position.z() + (size / 2));
+		this.albedo = albedo;
 	}
 
 	public Interval axisInterval(int axisIndex) {
@@ -71,6 +74,7 @@ public class Cube {
 		} else {
 			rec.setT(tInterval.max());
 		}
+		rec.setColour(albedo);
 		return true;
 
 	}

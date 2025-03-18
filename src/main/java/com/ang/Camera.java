@@ -75,9 +75,8 @@ public class Camera {
 			Ray r = getRay(i);	
 			HitRecord rec = new HitRecord();
 			if (world.hit(r, new Interval(0.001, Global.INFINITY), rec)) {
-				Colour columnCol = getColumnColour(r, rec);
 				int[] bounds = getColumnBounds(r, rec);
-				renderer.writeColumn(columnCol, backgroundCol, i, 
+				renderer.writeColumn(rec.colour(), backgroundCol, i, 
 						bounds[0], bounds[1]);
 			} else {
 				renderer.writeColumn(backgroundCol, backgroundCol, i, 
@@ -92,7 +91,7 @@ public class Camera {
 
 	}
 
-	private Colour getColumnColour(Ray r, HitRecord rec) {
+	private Colour getDepth(Ray r, HitRecord rec) {
 		double distance = (r.at(rec.t()).sub(r.origin())).length();
 		double value = 1.0 - (distance / 10.0);
 		return new Colour(value, value, value);

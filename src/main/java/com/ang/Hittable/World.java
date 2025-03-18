@@ -2,28 +2,28 @@ package com.ang.Hittable;
 
 import com.ang.Maths.*;
 import com.ang.HitRecord;
+import com.ang.Render.Colour;
 
 public class World {
 	private final double cubeSize = 1.5;
-	private int[][] map = new int[][]{
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 0, 1, 1, 1, 1, 1, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-		{1, 0, 1, 0, 0, 0, 1, 0, 0, 1},
-		{1, 0, 1, 0, 0, 0, 1, 0, 0, 1},
-		{1, 0, 1, 0, 0, 0, 1, 1, 0, 1},
+	private Colour[] colours = new Colour[]{
+		new Colour(1.0, 1.0, 1.0),
+		new Colour(1.0, 0.0, 0.0),
+		new Colour(0.0, 1.0, 0.0),
+		new Colour(0.0, 0.0, 1.0)
+	};
+	int[][] map = new int[][]{
+		{1, 2, 4, 4, 4, 4, 4, 4, 4, 1},
+		{1, 0, 4, 4, 4, 4, 1, 0, 0, 2},
+		{1, 0, 0, 0, 0, 0, 1, 0, 0, 2},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+		{3, 0, 0, 0, 0, 0, 3, 0, 0, 2},
+		{3, 0, 4, 0, 0, 0, 3, 0, 0, 2},
+		{2, 0, 4, 0, 0, 0, 3, 0, 0, 2},
+		{2, 0, 4, 0, 0, 0, 3, 4, 0, 2},
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	};
-//	private int[][] map = new int[][] {
-//		{1, 1, 1, 1, 1},
-//		{1, 0, 0, 0, 1},
-//		{1, 0, 0, 0, 1},
-//		{1, 0, 0, 0, 1},
-//		{1, 1, 1, 1, 1}
-//	};
 	private Cube[] worldArray;
 
 	public World() {
@@ -45,6 +45,7 @@ public class World {
 					didHit = true;	
 					closestHit = tempRec.t();
 					rec.setT(tempRec.t());
+					rec.setColour(tempRec.colour());
 				}
 			}
 		}
@@ -56,7 +57,7 @@ public class World {
 		int count = 0;
 		for (int y = 0; y < map.length; y++) {
 			for (int x = 0; x < map[0].length; x++) {
-				if (map[y][x] == 1) {
+				if (map[y][x] > 0) {
 					count++;
 				}
 			}
@@ -65,11 +66,11 @@ public class World {
 		int outHead = 0;
 		for (int y = 0; y < map.length; y++) {
 			for (int x = 0; x < map[0].length; x++) {
-				if (map[y][x] == 1) {
+				if (map[y][x] > 0) {
 					Vec3 pos = new Vec3((double) x * cubeSize, 
 							(double) y * cubeSize, 
 							cubeSize / 2);
-					out[outHead++] = new Cube(pos, cubeSize);
+					out[outHead++] = new Cube(pos, cubeSize, colours[map[y][x] - 1]);
 				}
 			}
 		}
