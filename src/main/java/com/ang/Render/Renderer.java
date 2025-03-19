@@ -88,21 +88,6 @@ public class Renderer {
 		}
 	}
 
-	public void writeChevron(Colour colour, int width, int height, 
-			Vec2 facing, int x, int y) {
-		int chevColour = processToInt(colour);
-		int yTop = y - (height / 2);
-		int yBot = y + (height / 2);
-		for (int j = yTop; j < yBot; j++) {
-			int rowWidth = (int) Math.round(((double) width * (j - y)) / (double) height);
-			int xStart = x - (rowWidth / 2);
-			int xEnd = x + (rowWidth / 2);
-			for (int i = xStart; i < xEnd; i++) {
-				img.setRGB(i, j, chevColour);
-			}
-		}
-	}
-
 	public void repaint() {
 		frame.repaint();
 	}

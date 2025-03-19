@@ -27,4 +27,9 @@ public class Colour {
 		return b;
 
 	}
+
+	public Colour mul(double t) {
+		return new Colour(r * t, g * t, b * t);
+
+	}
 }

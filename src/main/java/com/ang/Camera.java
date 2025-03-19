@@ -9,7 +9,7 @@ public class Camera {
 	private Colour 		backgroundCol 	= new Colour(0.3, 0.4, 0.6);
 	private int 		imageWidth 		= 100;
 	private double 		aspectRatio 	= 16.0 / 9.0;
-	private double 		fov 			= Math.PI / 2.5;
+	private double 		fov 			= Math.PI / 3.0;
 	private Vec2 		position 		= new Vec2(0.0, 0.0);
 	private Vec2 		facing 			= new Vec2(0.0, 1.0);
 	private int 		imageHeight;
@@ -19,7 +19,6 @@ public class Camera {
 	private Vec2 		pixel0Position;
 	private Vec2 		pixelDeltaU;
 	private Renderer 	renderer;
-	private Minimap		minimapRenderer;
 	
 	public Camera(int imageWidth, double aspectRatio) {
 		this.imageWidth = imageWidth;
@@ -49,7 +48,6 @@ public class Camera {
 		imageHeight = (int) Math.round((double) imageWidth / aspectRatio);
 		imageWidth = Math.max(imageWidth, 1);
 		renderer = new Renderer(imageWidth, imageHeight, il);
-		minimapRenderer = new Minimap(renderer);
 		viewportHeight = 2.0 * Math.tan(fov / 2.0);
 		viewportWidth = viewportHeight 
 				* ((double) imageWidth / (double) imageHeight);
@@ -76,25 +74,30 @@ public class Camera {
 			HitRecord rec = new HitRecord();
 			if (world.hit(r, new Interval(0.001, Global.INFINITY), rec)) {
 				int[] bounds = getColumnBounds(r, rec);
-				renderer.writeColumn(rec.colour(), backgroundCol, i, 
+				renderer.writeColumn(rayColour(r, rec), backgroundCol, i, 
 						bounds[0], bounds[1]);
 			} else {
 				renderer.writeColumn(backgroundCol, backgroundCol, i, 
 						imageHeight); 
 			}
 		}
-		// Drawing the minimap
-		minimapRenderer.drawMinimap(world, position, facing);
 		// Refreshing the screen
 		renderer.repaint();
 		return System.currentTimeMillis() - startTime;
 
 	}
 
-	private Colour getDepth(Ray r, HitRecord rec) {
+	private Colour rayColour(Ray r, HitRecord rec) {
+		Colour colour = rec.colour();	
+		colour = colour.mul(getDepth(r, rec));
+		return colour;
+
+	}
+
+	private double getDepth(Ray r, HitRecord rec) {
 		double distance = (r.at(rec.t()).sub(r.origin())).length();
-		double value = 1.0 - (distance / 10.0);
-		return new Colour(value, value, value);
+		double value = 1.0 - (distance / 15.0);
+		return value;
 
 	}
 
