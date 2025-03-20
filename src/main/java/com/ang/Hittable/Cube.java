@@ -4,7 +4,7 @@ import com.ang.Maths.*;
 import com.ang.HitRecord;
 import com.ang.Render.Colour;
 
-public class Cube {
+public class Cube extends Hittable {
 	private Interval x;
 	private Interval y;
 	private Interval z;
@@ -37,6 +37,7 @@ public class Cube {
 		}
 	}
 
+	@Override
 	public boolean hit(Ray r, Interval tInterval, HitRecord rec) {
 		for (int axis = 0; axis < 2; axis++) {
 			Interval axisInterval = axisInterval(axis);

@@ -109,6 +109,11 @@ public class Vec2 {
 		}
 	}
 
+	public static double cross(Vec2 u, Vec2 v) {
+		return (u.x() * v.y()) - (u.y() * v.x());
+
+	}
+
 	public static double dot(Vec2 u, Vec2 v) {
 		return (u.x() * v.x()) + (u.y() * v.y()); 
 

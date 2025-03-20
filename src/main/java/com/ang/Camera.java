@@ -5,7 +5,6 @@ import com.ang.Maths.*;
 import com.ang.Hittable.*;
 
 public class Camera {
-	// TODO: fix minimap
 	private Colour 		backgroundCol 	= new Colour(0.3, 0.4, 0.6);
 	private int 		imageWidth 		= 100;
 	private double 		aspectRatio 	= 16.0 / 9.0;
@@ -20,9 +19,8 @@ public class Camera {
 	private Vec2 		pixelDeltaU;
 	private Renderer 	renderer;
 	
-	public Camera(int imageWidth, double aspectRatio) {
+	public Camera(int imageWidth) {
 		this.imageWidth = imageWidth;
-		this.aspectRatio = aspectRatio;
 	}
 
 	public void setTransform(Vec2 position, Vec2 facing) {
@@ -66,7 +64,7 @@ public class Camera {
 		pixel0Position = position.sub(offset).add((pixelDeltaU).div(2.0));
 	}
 
-	public long draw(World world) {
+	public long draw(HittableList world) {
 		long startTime = System.currentTimeMillis();
 		// Drawing the world
 		for (int i = 0; i < imageWidth; i++) {

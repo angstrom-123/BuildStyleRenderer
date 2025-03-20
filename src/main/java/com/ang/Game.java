@@ -1,37 +1,69 @@
 package com.ang;
 
-import com.ang.Hittable.World;
+import com.ang.Hittable.*;
 import com.ang.Maths.Vec2;
 import com.ang.Thread.*;
 
 import java.awt.event.KeyEvent;
 
 public class Game implements ThreadInterface, InputInterface {
-	private final int 			SCREEN_WIDTH 	= 600;
-	private final double 		ASPECT_RATIO 	= 16.0 / 9.0;
-	private final int 			FRAME_MS 		= 1000 / 60;
-	private final double 		MOVEMENT_STEP 	= 0.08;
-	private final double 		TURN_STEP 		= Math.PI / 40.0;
-	private boolean[] 			keyInputs 		= new boolean[256];
-	private InputListener 		il 				= new InputListener(this);
-	private World 				world 			= new World();
-	private Camera 				cam 			= new Camera(SCREEN_WIDTH, ASPECT_RATIO);
+	private final int 		IMAGE_WIDTH 	= 600;
+	private final int 		FRAME_MS 		= 1000 / 60;
+	private boolean[] 		keyInputs 		= new boolean[256];
+	private InputListener 	il 				= new InputListener(this);
+	private Camera 			cam 			= new Camera(IMAGE_WIDTH);
+	private CameraMover		controller  	= new CameraMover(cam);
+	private HittableList	world;
 
-	public Game() {
+	public Game(int selection) {
 		cam.setTransform(new Vec2(2.5, 2.5), new Vec2(0.0, 1.0)); 
 		cam.init(il);
 		Global.uw = new UpdateWorker(FRAME_MS);
 		Global.uw.setInterface(this);
+		switch(selection) {
+		case 0:
+			// TODO: make map editor
+			Vec2[] points = new Vec2[]{
+				new Vec2(4.0, 4.0),
+				new Vec2(4.0, -4.0),
+				new Vec2(-4.0, -4.0),
+				new Vec2(-4.0, 4.0)
+			};
+			world = new Sector(points);
+			break;
+
+		case 1:
+			int[][] map = new int[][]{
+				{1, 2, 4, 4, 4, 4, 4, 4, 4, 1},
+				{1, 0, 4, 4, 4, 4, 1, 0, 0, 2},
+				{1, 0, 0, 0, 0, 0, 1, 0, 0, 2},
+				{1, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+				{1, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+				{3, 0, 0, 0, 0, 0, 3, 0, 0, 2},
+				{3, 0, 4, 0, 0, 0, 3, 0, 0, 2},
+				{2, 0, 4, 0, 0, 0, 3, 0, 0, 2},
+				{2, 0, 4, 0, 0, 0, 3, 4, 0, 2},
+				{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+			};
+			world = new CubeWorld(map);
+			break;
+
+		default:
+			System.out.println("Invalid option selected");
+			break;
+
+		}
 	}
 
 	public void startGame() {
-		Global.uw.run();
+		if (world != null) {
+			Global.uw.run();
+		}
 	}
 
 	@Override
 	public void update() {
-		cam.changePosition(getMovementInput());
-		cam.changeFacing(getTurnInput());
+		controller.update(keyInputs);
 		cam.update();
 		cam.draw(world);
 	}
@@ -46,33 +78,4 @@ public class Game implements ThreadInterface, InputInterface {
 		keyInputs[key] = false;
 	}
 
-	private double getTurnInput() {
-		double theta = 0.0;
-		if (keyInputs[KeyEvent.VK_LEFT]) { 
-			theta += TURN_STEP;
-		}
-		if (keyInputs[KeyEvent.VK_RIGHT]) { 
-			theta -= TURN_STEP;
-		}
-		return theta;
-
-	}
-
-	private Vec2 getMovementInput() {
-		Vec2 out = new Vec2(0.0, 0.0);
-		if (keyInputs[KeyEvent.VK_W]) {
-			out = out.add(new Vec2(0.0, MOVEMENT_STEP));
-		}
-		if (keyInputs[KeyEvent.VK_A]) {
-			out = out.add(new Vec2(MOVEMENT_STEP, 0.0));
-		}
-		if (keyInputs[KeyEvent.VK_S]) {
-			out = out.add(new Vec2(0.0, -MOVEMENT_STEP));
-		}
-		if (keyInputs[KeyEvent.VK_D]) {
-			out = out.add(new Vec2(-MOVEMENT_STEP, 0.0));
-		}
-		return out;
-
-	}
 }
