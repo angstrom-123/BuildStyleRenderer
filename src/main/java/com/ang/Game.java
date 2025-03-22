@@ -18,12 +18,11 @@ public class Game implements ThreadInterface, InputInterface {
 	private HittableList	world;
 
 	public Game(String mapFileName) {
-		cam.setTransform(new Vec2(2.5, 2.5), new Vec2(0.0, 1.0)); 
-		cam.init(il);
-		Global.uw = new UpdateWorker(FRAME_MS);
-		Global.uw.setInterface(this);
 		boolean didLoad = loadMapFile(mapFileName);
 		if (didLoad) {
+			cam.init(il);
+			Global.uw = new UpdateWorker(FRAME_MS);
+			Global.uw.setInterface(this);
 			System.out.println("Level loaded successfully");
 		} else {
 			System.out.println("Failed to load level");

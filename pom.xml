@@ -5,17 +5,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.ang</groupId>
-  <artifactId>BuildStyleRenderer</artifactId>
-  <version>1.0.0</version>
+  <artifactId>Primeval</artifactId>
+  <version>1.0.0-alpha</version>
 
-  <name>BuildStyleRenderer</name>
+  <name>Primeval</name>
   <!-- <url></url> -->
 
   <distributionManagement>
     <repository>
       <uniqueVersion>false</uniqueVersion>
-      <id>BuildStyleRenderer</id>
-      <name>BuildStyleRenderer</name>
+      <id>Primeval</id>
+      <name>Primeval</name>
       <url>file://${project.build.directory}/build</url>
       <layout>default</layout>
     </repository>
