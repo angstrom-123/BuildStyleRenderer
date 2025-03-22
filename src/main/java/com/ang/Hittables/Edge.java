@@ -1,4 +1,4 @@
-package com.ang.Hittable;
+package com.ang.Hittables;
 
 import com.ang.Maths.*;
 import com.ang.Graphics.Colour;

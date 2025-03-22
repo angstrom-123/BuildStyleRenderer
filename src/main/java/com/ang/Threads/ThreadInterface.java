@@ -1,4 +1,4 @@
-package com.ang.Thread;
+package com.ang.Threads;
 
 public interface ThreadInterface {
 	void update();

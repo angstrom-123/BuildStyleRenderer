@@ -1,4 +1,4 @@
-package com.ang;
+package com.ang.Loaders;
 
 import com.ang.Exceptions.MapReadException;
 

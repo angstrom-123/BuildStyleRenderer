@@ -1,6 +1,6 @@
 package com.ang;
 
-import com.ang.Thread.UpdateWorker;
+import com.ang.Threads.UpdateWorker;
 
 public class Global {
 	public static UpdateWorker uw;

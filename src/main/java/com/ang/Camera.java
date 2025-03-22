@@ -2,7 +2,7 @@ package com.ang;
 
 import com.ang.Graphics.*;
 import com.ang.Maths.*;
-import com.ang.Hittable.*;
+import com.ang.Hittables.*;
 import com.ang.Inputs.InputListener;
 
 public class Camera {

@@ -1,7 +1,6 @@
-package com.ang;
+package com.ang.Loaders;
 
-import com.ang.Graphics.Colour;
-import com.ang.Hittable.HittableList;
+import com.ang.Hittables.HittableList;
 import com.ang.Maths.Vec2;
 
 public class MapData {
@@ -49,7 +48,7 @@ public class MapData {
 	}
 
 	public boolean isPopulated() {
-		if ((world != null) && (position != null) && (facing != null)) {
+		if ((worldType != null) && (world != null) && (position != null) && (facing != null)) {
 			return true;
 
 		}

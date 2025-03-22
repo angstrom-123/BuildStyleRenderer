@@ -1,9 +1,10 @@
 package com.ang;
 
 import com.ang.Exceptions.*;
-import com.ang.Hittable.*;
+import com.ang.Hittables.*;
+import com.ang.Loaders.*;
 import com.ang.Maths.Vec2;
-import com.ang.Thread.*;
+import com.ang.Threads.*;
 import com.ang.Inputs.*;
 
 public class Game implements ThreadInterface, InputInterface {

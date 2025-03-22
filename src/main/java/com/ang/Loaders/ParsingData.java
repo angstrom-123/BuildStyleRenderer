@@ -1,4 +1,4 @@
-package com.ang;
+package com.ang.Loaders;
 
 public class ParsingData {
 	private int worldTypeLineNumber;

@@ -1,7 +1,7 @@
-package com.ang;
+package com.ang.Loaders;
 
-import com.ang.Hittable.HittableList;
-import com.ang.Hittable.CubeWorld;
+import com.ang.Hittables.HittableList;
+import com.ang.Hittables.CubeWorld;
 import com.ang.Exceptions.MapParseException;
 import com.ang.Graphics.Colour;
 import com.ang.Maths.Vec2;
