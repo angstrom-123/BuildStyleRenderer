@@ -1,7 +1,7 @@
 package com.ang.Hittable;
 
 import com.ang.Maths.*;
-import com.ang.Render.Colour;
+import com.ang.Graphics.Colour;
 
 public class Sector extends HittableList {
 	// TODO: implement sector heights / light level

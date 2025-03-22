@@ -6,12 +6,12 @@ public class Main {
 		g.startGame();
     }
 
-	private static int parseArgs(String[] args) {
+	private static String parseArgs(String[] args) {
 		if (args.length == 0) {
-			return 0;
+			return "testMap.txt";
 
 		}
-		return Integer.valueOf(args[0]);
+		return args[1];
 	
 	}
 }

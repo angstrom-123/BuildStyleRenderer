@@ -1,8 +1,9 @@
 package com.ang;
 
-import com.ang.Render.*;
+import com.ang.Graphics.*;
 import com.ang.Maths.*;
 import com.ang.Hittable.*;
+import com.ang.Inputs.InputListener;
 
 public class Camera {
 	private Colour 		backgroundCol 	= new Colour(0.3, 0.4, 0.6);

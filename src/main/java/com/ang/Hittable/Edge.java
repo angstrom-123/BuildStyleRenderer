@@ -1,8 +1,7 @@
 package com.ang.Hittable;
 
 import com.ang.Maths.*;
-import com.ang.Render.Colour;
-import com.ang.HitRecord;
+import com.ang.Graphics.Colour;
 
 public class Edge extends Hittable {
 	private Vec2 p1;

@@ -1,4 +1,4 @@
-package com.ang;
+package com.ang.Inputs;
 
 public interface InputInterface {
 	void pressed(int key);

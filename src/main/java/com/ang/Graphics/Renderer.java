@@ -1,4 +1,4 @@
-package com.ang.Render;
+package com.ang.Graphics;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -6,8 +6,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 
-import com.ang.Maths.Vec2;
-import com.ang.InputListener;
+import com.ang.Inputs.InputListener;
 import com.ang.Global;
 
 public class Renderer {

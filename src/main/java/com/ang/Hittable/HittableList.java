@@ -2,7 +2,6 @@ package com.ang.Hittable;
 
 import com.ang.Maths.*;
 import com.ang.Global;
-import com.ang.HitRecord;
 
 public class HittableList extends Hittable {
 	private Hittable[] hittables;

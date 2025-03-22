@@ -1,6 +1,7 @@
-package com.ang;
+package com.ang.Inputs;
 
 import com.ang.Maths.Vec2;
+import com.ang.Camera;
 
 import java.awt.event.KeyEvent;
 

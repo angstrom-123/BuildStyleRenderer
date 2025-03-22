@@ -1,6 +1,6 @@
-package com.ang;
+package com.ang.Hittable;
 
-import com.ang.Render.Colour;
+import com.ang.Graphics.Colour;
 
 public class HitRecord {
 	private double t;
